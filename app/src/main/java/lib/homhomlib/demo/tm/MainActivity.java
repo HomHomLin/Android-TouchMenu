@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = (Button)findViewById(R.id.btnToggle);
-        mTouchMenuHelper = new TouchMenuHelper(this,button,View.inflate(button.getContext(), R.layout.menu, null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,null);
+        mTouchMenuHelper = new TouchMenuHelper(this,button,View.inflate(button.getContext(), R.layout.menu, null), 100, 100,null,TouchMenuHelper.MODE_POINTER);
         mTouchMenuHelper.update();
     }
 }

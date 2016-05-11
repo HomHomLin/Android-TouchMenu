@@ -22,21 +22,27 @@ public class TouchMenuHelper implements GestureDetector.OnGestureListener,View.O
 
     private PopupWindow mPopupWindow;
 
+    public static final int MODE_CENTER = 0;
+    public static final int MODE_POINTER = 1;
+
+    private int mMode = MODE_POINTER;
+
 //    public TouchMenuHelper(Context context){
 //        this(context,null,null,0,0);
 //    }
 
     public TouchMenuHelper(Context context, View view, View menuView, int menuWidth, int menuHeight){
-        this(context,view,menuView,menuWidth,menuHeight,null);
+        this(context,view,menuView,menuWidth,menuHeight,null,MODE_POINTER);
     }
 
-    public TouchMenuHelper(Context context, View view, View menuView, int menuWidth, int menuHeight, View.OnTouchListener onTouchListener){
+    public TouchMenuHelper(Context context, View view, View menuView, int menuWidth, int menuHeight, View.OnTouchListener onTouchListener, int mode){
         mGestureDetector = new GestureDetector(context, this);
         mView = view;
         mMenuView = menuView;
         mMenuHeight = menuHeight;
         mMenuWidth = menuWidth;
         mOnTouchListener = onTouchListener;
+        mMode = mode;
     }
 
     public void update(){
@@ -105,19 +111,19 @@ public class TouchMenuHelper implements GestureDetector.OnGestureListener,View.O
             return;
         }
 
-//        int[] location = new int[2];
-//        mView.getLocationOnScreen(location);
+        int showX = (int)event.getRawX();
+        int showY = (int)event.getRawY() - mMenuHeight;
 
-//        if (mPopupWindow == null) {
-//            mPopupWindow = new PopupWindow(mMenuView, mMenuWidth, mMenuHeight);
-//            mPopupWindow.setFocusable(true);
-//            mPopupWindow.setOutsideTouchable(true);
-//            mPopupWindow.setBackgroundDrawable(mView.getContext().getResources().getDrawable(
-//                    R.drawable.popwindow_bg));
-//            mPopupWindow.update();
-//        }
+        if(mMode == MODE_CENTER){
+            int[] location = new int[2];
+            mView.getLocationOnScreen(location);
+            showX = location[0] + mView.getMeasuredWidth() / 2 - mMenuWidth / 2;
+            showY = location[1] - 40;
+        }
+
+
         if (!mPopupWindow.isShowing()) {
-            mPopupWindow.showAtLocation(mView, Gravity.LEFT | Gravity.TOP, (int)event.getRawX(), (int)event.getRawY());
+            mPopupWindow.showAtLocation(mView, Gravity.LEFT | Gravity.TOP, showX,showY);
         }
     }
 
